@@ -3,21 +3,30 @@ class Monster {
    * 
    * @param {x axis position on canvas} x 
    * @param {y axis position on canvas} y 
-   * @param {width of player} width 
-   * @param {height of player} height 
    */
-  constructor(x,y,width,height){
-      this.x = x;
-      this.y = y;
-      this.width = width;
-      this.height = height;
+  constructor(x,y){
+    this.x = x;
+    this.y = y;
+    this.speed = 10;
 
-      const monsterImg = new Image();
-      monsterImg.src = "../images/enemy-snake.png";
-      this.monster = monsterImg;
+    const monsterImg = new Image();
+    monsterImg.src = "../images/sprite-monster1.png";
+    this.monster = monsterImg;
 
-      this.canvasWidth = document.querySelector("#canvas-img").width;
-      this.canvasHeight = document.querySelector("#canvas-img").height;
+    // initial frame position and dimensions
+    this.spriteX = 0;
+    this.spriteY = 704;
+    this.frameWidth = 64;
+    this.frameHeight = 64;
+
+    // this might not be necessary since they do not seem to affect the image
+    this.spriteWidth = 64;
+    this.spriteHeight = 64;
+
+    const ctx = document.getElementById('canvas-img').getContext('2d');
+    this.canvasCtx = ctx;
+    this.canvasWidth = document.querySelector("#canvas-img").width;
+    this.canvasHeight = document.querySelector("#canvas-img").height;
   }
 
   /**
