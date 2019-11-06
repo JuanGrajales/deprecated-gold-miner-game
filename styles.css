@@ -1,0 +1,32 @@
+.background-img {
+  background-color: black;
+  background-image: url("./images/background-desert.jpeg");
+  background-position: center;
+  background-repeat: no-repeat;
+  /* cover - covers the entire container */
+  background-size: cover;
+  /* set the height of the background image to 100% of the available space */
+  height: 100vh;
+  /* remove Boostrap container-fluid padding */
+  padding: 0%;
+  display: flex;
+  /* center intems horizontally */
+  justify-content: center;
+  /* center items vertically */
+  align-items: center;
+  /* align the items inside of this parent class as a column from top to bottom */
+  flex-direction: column;
+}
+
+.background-img > .start-btn {
+  height: 60px;
+  font-size: xx-large;
+}
+
+.background-img > .home-title {
+  font-family: fantasy;
+  font-size: 120px;
+  font-weight: bold;
+  /* remove default margin */
+  margin-bottom: 0%;
+}
