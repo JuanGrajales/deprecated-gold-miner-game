@@ -7,6 +7,7 @@
   background-size: cover;
   /* set the height of the background image to 100% of the available space */
   height: 100vh;
+  width: 100vw;
   /* remove Boostrap container-fluid padding */
   padding: 0%;
   display: flex;
@@ -19,14 +20,29 @@
 }
 
 .background-img > .start-btn {
-  height: 60px;
-  font-size: xx-large;
+  height: 7vh;
+  font-size: 2vw;
 }
 
 .background-img > .home-title {
   font-family: fantasy;
-  font-size: 120px;
+  font-size: 8vw;
   font-weight: bold;
   /* remove default margin */
   margin-bottom: 0%;
+}
+
+
+#canvas-board {
+  padding: 0%;
+}
+
+#canvas-img {
+  background-image: url("./images/forest-terrain.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* can also use 100%, depends on how it will working later  */
+  height: 100vh;
+  padding: 0%;
 }
