@@ -111,21 +111,21 @@ class Game {
     let obstacleWidth = 30;
     let obstacleHeight = 50;
     let obstacleType = 0;
-
+    
     for (let i = 0; i < numOfObstacles; i++) {
       obstacleX = Math.floor(Math.random() * (this.width - obstacleWidth));
       obstacleY = Math.floor(Math.random() * (this.height - obstacleHeight));
       obstacleType = Math.floor(Math.random() * 2) + 1;
-
+      
       if(obstacleX <= this.thePlayer.frameWidth)
-        obstacleX += this.thePlayer.frameWidth;
+      obstacleX += this.thePlayer.frameWidth;
       if(obstacleX <= this.thePlayer.frameHeight)
-        obstacleY += this.thePlayer.frameHeight;
-
+      obstacleY += this.thePlayer.frameHeight;
+      
       this.obstacleArr.push({i : new Obstacle(obstacleX, obstacleY, obstacleWidth, obstacleHeight, obstacleType)});
     }
   }
-
+  
   /**
    * draw the all obstacle objects in the obstacleArr on canvas
    */
@@ -135,6 +135,17 @@ class Game {
     }
   }
   
+  createBackground() {
+    
+  }
+  
+  drawBackground() {
+    
+  }
+  
+  drawDirt() {
+
+  }
   
   /**
    * detect if the player has collided with monster
@@ -290,7 +301,7 @@ class Game {
     let playerLeftSide = futureX  + leftProximity;
     let playerTopSide = futureY + topProximity;
     let playerBottomSide = futureY + this.thePlayer.frameHeight - bottomProximity;
-    
+
     // this.concealArray.forEach((e,index) => {
     //   if(playerRightSide >= e.x && playerLeftSide <= e.x + e.width && 
     //     playerBottomSide >= e.y && playerTopSide <= e.y + e.height) {
@@ -300,25 +311,16 @@ class Game {
     // })
   }
 
+  /**
+   * player collision for all game objects
+   * @param {new x axis position on canvas} futureX 
+   * @param {new y axis position on canvas} futureY  
+   */
   playerCollision(futureX, futureY) {
     this.monster2Collision(futureX, futureY);
     this.moneyCollision(futureX, futureY);
     this.obstacleCollision(futureX, futureY);
     return this.monsterCollision(futureX, futureY);
-  }
-
-
-
-  createBackground() {
-    
-  }
-  
-  drawBackground() {
-    
-  }
-  
-  drawDirt() {
-
   }
 
   // track the score and keeps adding it to the score element in the score-board
