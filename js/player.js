@@ -1,12 +1,10 @@
 class Player {
   /**
    * constructor for Player object
-   * @param {x axis position on canvas} x 
-   * @param {y axis position on canvas} y 
    */
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
+  constructor() {
+    this.x = 0;
+    this.y = 0;
     this.speed = 8;
 
     const characterImg = new Image();
@@ -101,6 +99,11 @@ class Player {
           this.spriteX += 64;
         break;
     }
+  }
+
+  movePlayer(futureX, futureY, characterDirection) {
+    this.changePlayerPosition(futureX, futureY);  
+    this.changeSpriteFrame(characterDirection);
   }
 
   /**

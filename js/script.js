@@ -6,7 +6,7 @@ let canvasWidth = document.querySelector("#canvas-img").width;
 let canvasHeight = document.querySelector("#canvas-img").height;
 
 // create a Game object
-let game1 = new Game(canvasWidth, canvasHeight);
+let game1 = new Game();
 let player = game1.thePlayer;
 let monster = game1.theMonster;
 
@@ -24,8 +24,10 @@ function mainLoop() {
   // clearRect erases the pixels of the canvas starting from (0, 0) until (canvasWidth, canvasHeight)
   ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-  // draw player on canvas
-  player.drawPlayer()
+  game1.theSound.playBackground();
+  player.drawPlayer();
+  game1.drawMoney();
+  game1.drawObstacle();
 
   // move the monster position before drawing
   if(frames % frameSpeed === 0) {
@@ -45,20 +47,20 @@ function movePlayer() {
   document.onkeydown = function (e) {
     switch(e.key) {
       case "ArrowUp":
-        player.changePlayerPosition(player.x, player.y - player.speed);  
-        player.changeSpriteFrame(e.key);  
+        if(game1.playerCollision(player.x, player.y - player.speed))
+          player.movePlayer(player.x, player.y - player.speed, e.key); 
         break;
       case "ArrowDown":
-        player.changePlayerPosition(player.x, player.y + player.speed);  
-        player.changeSpriteFrame(e.key);    
+        if(game1.playerCollision(player.x, player.y + player.speed))
+          player.movePlayer(player.x, player.y + player.speed, e.key);     
         break;
       case "ArrowLeft":
-        player.changePlayerPosition(player.x - player.speed, player.y);  
-        player.changeSpriteFrame(e.key); 
+        if(game1.playerCollision(player.x - player.speed, player.y))
+          player.movePlayer(player.x - player.speed, player.y, e.key);    
         break;
       case "ArrowRight":
-        player.changePlayerPosition(player.x + player.speed, player.y); 
-        player.changeSpriteFrame(e.key);     
+        if(game1.playerCollision(player.x + player.speed, player.y))
+          player.movePlayer(player.x + player.speed, player.y, e.key);     
         break;
     }
   }

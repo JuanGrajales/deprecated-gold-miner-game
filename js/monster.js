@@ -4,29 +4,29 @@ class Monster {
    * @param {x axis position on canvas} x 
    * @param {y axis position on canvas} y 
    */
-  constructor(x, y){
-    this.x = x;
-    this.y = y;
-    this.speed = 3;
+  constructor(){
+    this.canvasWidth = document.querySelector("#canvas-img").width; // do not move line position, this.x needs canvasWidth
+    this.canvasHeight = document.querySelector("#canvas-img").height;
+    const ctx = document.getElementById('canvas-img').getContext('2d');
+    this.canvasCtx = ctx;
 
+    this.x = this.canvasWidth/2;
+    this.y = this.canvasHeight/2;
+    this.speed = 3;
+    
     const monsterImg = new Image();
     monsterImg.src = "../images/sprite-gold-armor.png";
     this.monster = monsterImg;
-
+    
     // initial frame position and dimensions
     this.spriteX = 0;
     this.spriteY = 704;
     this.frameWidth = 64;
     this.frameHeight = 64;
-
+    
     // this might not be necessary since they do not seem to affect the image
     this.spriteWidth = 64;
     this.spriteHeight = 64;
-
-    const ctx = document.getElementById('canvas-img').getContext('2d');
-    this.canvasCtx = ctx;
-    this.canvasWidth = document.querySelector("#canvas-img").width;
-    this.canvasHeight = document.querySelector("#canvas-img").height;
   }
 
   /**
