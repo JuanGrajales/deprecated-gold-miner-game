@@ -4,10 +4,10 @@ class Player {
    * @param {x axis position on canvas} x 
    * @param {y axis position on canvas} y 
    */
-  constructor(x,y) {
+  constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.speed = 10;
+    this.speed = 8;
 
     const characterImg = new Image();
     characterImg.src = "../images/sprite-monster1.png";
@@ -35,7 +35,7 @@ class Player {
    * @param {new y axis position on canvas} futureY 
    */
   withinBoundary(futureX, futureY) {
-    if(futureX + this.frameWidth <= this.canvasWidth && futureX >= 0 && 
+    if(futureX + this.frameWidth - 20 <= this.canvasWidth && futureX >= -20 && 
       futureY + this.frameHeight <= this.canvasHeight && futureY >= 0)
       return true;
     else
@@ -70,9 +70,9 @@ class Player {
         else
           this.spriteX += 64;
         break;
-      case "ArrowDown":
-        if (this.spriteY > 640 || this.spriteY < 640) {
-          this.spriteY = 640;
+      case "ArrowLeft":
+        if (this.spriteY > 576 || this.spriteY < 576) {
+          this.spriteY = 576;
           this.spriteX = 0;
         } 
         else if (this.spriteX + 64 > 512)
@@ -80,9 +80,9 @@ class Player {
         else
           this.spriteX += 64;
         break;
-      case "ArrowLeft":
-        if (this.spriteY > 576 || this.spriteY < 576) {
-          this.spriteY = 576;
+      case "ArrowDown":
+        if (this.spriteY > 640 || this.spriteY < 640) {
+          this.spriteY = 640;
           this.spriteX = 0;
         } 
         else if (this.spriteX + 64 > 512)
@@ -101,12 +101,10 @@ class Player {
           this.spriteX += 64;
         break;
     }
-
   }
 
   /**
    * draw the player on the canvas
-   * @param {passes the canvas context} context 
    */
   drawPlayer = () => {
     this.canvasCtx.drawImage(this.character, this.spriteX, this.spriteY, this.frameWidth, this.frameHeight, this.x, this.y, this.spriteWidth, this.spriteHeight);

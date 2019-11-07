@@ -10,7 +10,7 @@ class Game {
     this.playerArr = [];
     this.thePlayer = new Player(10,10);
     this.monsterArr = [];
-    this.theMonster = new Monster(canvasWidth/7, canvasHeight/7, 60, 100);
+    this.theMonster = new Monster(canvasWidth/2, canvasHeight/2);
 
     const ctx = document.getElementById('canvas-img').getContext('2d');
       this.canvasCtx = ctx;
@@ -56,4 +56,5 @@ class Game {
       canMove = false;
       this.theSound.playDamageSound();
     }
+  }
 }

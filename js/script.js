@@ -11,10 +11,13 @@ let player = game1.thePlayer;
 let monster = game1.theMonster;
 
 // frame counter
-let frame = 0;
+let frames = 0;
+// monster frame change speed
+let frameSpeed = 15;
 
-// function that recursively calls itself to update the animation screen
-// the loop can be called anything you want, doesn't have to be mainLoop
+/**
+ * mainLoop recursively calls itself
+ */
 function mainLoop() {
   frames++;
 
@@ -24,32 +27,42 @@ function mainLoop() {
   // draw player on canvas
   player.drawPlayer()
 
+  // move the monster position before drawing
+  if(frames % frameSpeed === 0) {
+    monster.moveMonster(player.x, player.y);  
+    monster.changeSpriteFrame(monster.monsterDirection(player.x, player.y));
+  }
+  monster.drawMonster();
+
   // recursively call mainLoop with proper browser frame speed
   window.requestAnimationFrame(mainLoop);
-}
+} 
 
+/**
+ * move the player in the direction of the key stroke
+ */
 function movePlayer() {
-  // depending on the key pressed the player will move in the key direction
   document.onkeydown = function (e) {
-    if (e.key === "ArrowUp") {
-      player.changePlayerPosition(player.x, player.y - player.speed);  
-      player.changeSpriteFrame(e.key);    
-    }
-    if (e.key === "ArrowDown") {
-      player.changePlayerPosition(player.x, player.y + player.speed);  
-      player.changeSpriteFrame(e.key);    
-    }
-    if (e.key === "ArrowLeft") {
-      player.changePlayerPosition(player.x - player.speed, player.y);  
-      player.changeSpriteFrame(e.key);    
-    }
-    if (e.key === "ArrowRight") {
-      player.changePlayerPosition(player.x + player.speed, player.y); 
-      player.changeSpriteFrame(e.key);    
+    switch(e.key) {
+      case "ArrowUp":
+        player.changePlayerPosition(player.x, player.y - player.speed);  
+        player.changeSpriteFrame(e.key);  
+        break;
+      case "ArrowDown":
+        player.changePlayerPosition(player.x, player.y + player.speed);  
+        player.changeSpriteFrame(e.key);    
+        break;
+      case "ArrowLeft":
+        player.changePlayerPosition(player.x - player.speed, player.y);  
+        player.changeSpriteFrame(e.key); 
+        break;
+      case "ArrowRight":
+        player.changePlayerPosition(player.x + player.speed, player.y); 
+        player.changeSpriteFrame(e.key);     
+        break;
     }
   }
 }
 
 mainLoop();
 movePlayer();
-
