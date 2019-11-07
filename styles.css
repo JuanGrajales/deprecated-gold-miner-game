@@ -34,6 +34,7 @@
 
 #canvas-board {
   padding: 0%;
+  display: flex;
 }
 
 #canvas-img {
@@ -44,4 +45,21 @@
   /* can also use 100%, depends on how it will working later, you can also try frames and use 100% when the broswer shrinks */
   height: 100vh;
   padding: 0%;
+}
+
+.score-board {
+  height: 10vh;
+  width: 100vw; 
+  display:flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  color:  black;
+  position: absolute;
+  top: 1%;
+  padding: 0%;
+}
+
+.score, .timer, .goal {
+  font-size: 3vw;
+  font-weight: bold;
 }
