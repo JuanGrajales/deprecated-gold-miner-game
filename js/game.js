@@ -11,6 +11,7 @@ class Game {
     this.moneyArr = [];
     this.obstacleArr = [];
     this.level = 1;
+    this.pause = false;
     this.luckyCharmFlag = false;
     
     this.goal = 0;
@@ -56,8 +57,8 @@ class Game {
     let numOfMonies = this.minMoneySpawn(this.level);
     let moneyX = 0;
     let moneyY = 0;
-    let moneyWidth = 15;
-    let moneyHeight = 25;
+    let moneyWidth = 10;
+    let moneyHeight = 20;
     let moneyType = 0;
 
     for (let i = 0; i < numOfMonies; i++) {
@@ -108,8 +109,8 @@ class Game {
     let numOfObstacles = this.minObstacleSpawn(this.level);
     let obstacleX;
     let obstacleY;
-    let obstacleWidth = 30;
-    let obstacleHeight = 50;
+    let obstacleWidth = 60;
+    let obstacleHeight = 80;
     let obstacleType = 0;
     
     for (let i = 0; i < numOfObstacles; i++) {
@@ -261,7 +262,7 @@ class Game {
     
     // the greater these values are the closer the player will be able to get to the object before it cannot move
     let rightProximity = 0;
-    let leftProximity = 10;
+    let leftProximity = 0;
     let topProximity = 0;
     let bottomProximity = 0;
     
@@ -271,23 +272,26 @@ class Game {
     let playerBottomSide = futureY + this.thePlayer.frameHeight - bottomProximity;
     
     this.obstacleArr.forEach((e,index) => {
+      console.log(e.i)
       if(playerRightSide >= e.i.x && playerLeftSide <= e.i.x + e.i.width && 
         playerBottomSide >= e.i.y && playerTopSide <= e.i.y + e.i.height) {
-          this.obstacleArr.splice(index, 1);
-          this.trackScore(e.i.getObstacleValue(e.i.obstacleType, this.luckyCharmFlag));
-          if(e.i.obstacleType === 1){
-            this.theSound.playCrashingSound();
-            if(this.luckyCharmFlag === true){
-              this.theSound.stopObstaclesSound();
-            }
-          }else{
-            this.theSound.playFallingSound();
-            if(this.luckyCharmFlag === true){
-              this.theSound.stopObstaclesSound();
-            }
-          }
+          // this.obstacleArr.splice(index, 1);
+          canMove = false;
+          // this.trackScore(e.i.getObstacleValue(e.i.obstacleType, this.luckyCharmFlag));
+          // if(e.i.obstacleType === 1){
+          //   this.theSound.playCrashingSound();
+          //   if(this.luckyCharmFlag === true){
+          //     this.theSound.stopObstaclesSound();
+          //   }
+          // }else{
+          //   this.theSound.playFallingSound();
+          //   if(this.luckyCharmFlag === true){
+          //     this.theSound.stopObstaclesSound();
+          //   }
+          // }
         }
     });
+    return canMove;
   }
 
   fogCollision(futureX, futureY) {
@@ -319,8 +323,10 @@ class Game {
   playerCollision(futureX, futureY) {
     this.monster2Collision(futureX, futureY);
     this.moneyCollision(futureX, futureY);
-    this.obstacleCollision(futureX, futureY);
-    return this.monsterCollision(futureX, futureY);
+    if(this.monsterCollision(futureX, futureY) && this.obstacleCollision(futureX, futureY))
+      return true;
+    else
+      return false; 
   }
 
   // track the score and keeps adding it to the score element in the score-board

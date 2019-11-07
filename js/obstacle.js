@@ -27,7 +27,7 @@ class Obstacle {
     }
     else if(obstacleType === 2) {
       const potholeImg = new Image();
-      potholeImg.src = "../images/pothole.png";
+      potholeImg.src = "../images/cactus.png";
       return potholeImg;
     }
   }

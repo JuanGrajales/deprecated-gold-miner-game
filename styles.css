@@ -38,10 +38,11 @@
 }
 
 #canvas-img {
-  background-image: url("./images/forest-terrain.jpg");
+  background-image: url("./images/desert-terrain1.jpg");
   background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  /* background-repeat: no-repeat; */
+  background-repeat: repeat;
+  background-size: auto;
   /* can also use 100%, depends on how it will working later, you can also try frames and use 100% when the broswer shrinks */
   height: 100vh;
   padding: 0%;
@@ -61,5 +62,15 @@
 
 .score, .timer, .goal {
   font-size: 3vw;
+  font-weight: bold;
+}
+
+.character-select-modal {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: normal;
+  /* align-self: center; */
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
   font-weight: bold;
 }

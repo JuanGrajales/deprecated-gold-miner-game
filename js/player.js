@@ -6,6 +6,7 @@ class Player {
     this.x = 0;
     this.y = 0;
     this.speed = 8;
+    this.health = 100;
 
     const characterImg = new Image();
     characterImg.src = "../images/sprite-monster1.png";

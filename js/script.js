@@ -19,23 +19,25 @@ let frameSpeed = 15;
  * mainLoop recursively calls itself
  */
 function mainLoop() {
-  frames++;
-
-  // clearRect erases the pixels of the canvas starting from (0, 0) until (canvasWidth, canvasHeight)
-  ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
-  game1.theSound.playBackground();
-  player.drawPlayer();
-  game1.drawMoney();
-  game1.drawObstacle();
-
-  // move the monster position before drawing
-  if(frames % frameSpeed === 0) {
-    monster.moveMonster(player.x, player.y);  
-    monster.changeSpriteFrame(monster.monsterDirection(player.x, player.y));
+  if(game1.pause) {
+    frames++;
+  
+    // clearRect erases the pixels of the canvas starting from (0, 0) until (canvasWidth, canvasHeight)
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+  
+    game1.theSound.playBackground();
+    player.drawPlayer();
+    game1.drawMoney();
+    game1.drawObstacle();
+  
+    // move the monster position before drawing
+    if(frames % frameSpeed === 0) {
+      monster.moveMonster(player.x, player.y);  
+      monster.changeSpriteFrame(monster.monsterDirection(player.x, player.y));
+    }
+    monster.drawMonster();
+  
   }
-  monster.drawMonster();
-
   // recursively call mainLoop with proper browser frame speed
   window.requestAnimationFrame(mainLoop);
 } 
@@ -62,9 +64,17 @@ function movePlayer() {
         if(game1.playerCollision(player.x + player.speed, player.y))
           player.movePlayer(player.x + player.speed, player.y, e.key);     
         break;
+      case " ":
+        game1.pause = !game1.pause;
+        break;
     }
   }
 }
 
-mainLoop();
-movePlayer();
+function startGame() {
+  mainLoop();
+  movePlayer();
+  $("#character-select").modal()
+}
+
+startGame();
