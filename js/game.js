@@ -11,13 +11,16 @@ class Game {
     this.moneyArr = [];
     this.obstacleArr = [];
     this.level = 1;
-    this.pause = false;
+    this.pause = true;
+    this.scoreyByLevel = []
+    this.currentScore= 0;
+    this.timer = 300;
+
     this.luckyCharmFlag = false;
-    
     this.goal = 0;
-    this.tracker = 0; // whats the difference between this
-    this.trackerByLevel = {}; // this
-    this.scoreByLevel = 0; // and this
+    // this.tracker = 0; // whats the difference between this
+    // this.trackerByLevel = {}; // this
+    // this.scoreByLevel = 0; // and this
     this.concealArray = [];
     this.playerSelected = 1;
     this.playerImage;
@@ -94,11 +97,11 @@ class Game {
    */
   minObstacleSpawn(level) {
     if(level === 1)
-      return Math.floor(Math.random() * 3) + 5;
+      return Math.floor(Math.random() * 3) + 15;
     else if(level === 2)
-      return Math.floor(Math.random() * 5) + 5;
+      return Math.floor(Math.random() * 5) + 15;
     else if(level === 3)
-      return Math.floor(Math.random() * 8) + 5;
+      return Math.floor(Math.random() * 8) + 15;
   }
 
   /**
@@ -136,18 +139,6 @@ class Game {
     }
   }
   
-  createBackground() {
-    
-  }
-  
-  drawBackground() {
-    
-  }
-  
-  drawDirt() {
-
-  }
-  
   /**
    * detect if the player has collided with monster
    * @param {new x axis position on canvas} futureX 
@@ -178,7 +169,9 @@ class Game {
      */
     if(playerRightSide >= monsterLeftSide && playerLeftSide <= monsterRightSide && 
       playerBottomSide >= monsterTopSide && playerTopSide <= monsterBottomSide) {
-        canMove = false;
+        // canMove = false;
+        this.thePlayer.health -= 10;
+        document.querySelector("#canvas-board > div > div.health > span").innerText = this.thePlayer.health;
         this.theSound.playDamageSound();
       }
     return canMove;
@@ -190,7 +183,7 @@ class Game {
    * @param {new y axis position on canvas} futureY 
    */
   monster2Collision(futureX, futureY) {
-    let canMove = true;   // change this to substract points or lose 
+    // let canMove = true;   // change this to substract points or lose 
     
     // the greater these values are the closer the player will be able to get to the object before it cannot move
     let rightProximity = 10;
@@ -211,11 +204,12 @@ class Game {
     if(this.level === 3) {
       if(playerRightSide >= monsterLeftSide && playerLeftSide <= monsterRightSide && 
         playerBottomSide >= monsterTopSide && playerTopSide <= monsterBottomSide) {
-        canMove = false;
+        // canMove = false;
+        
         this.theSound.playDamageSound();
       }
     }
-    return canMove;
+    // return canMove;
   }
 
   /**
@@ -241,7 +235,10 @@ class Game {
       if(playerRightSide >= e.i.x && playerLeftSide <= e.i.x + e.i.width && 
         playerBottomSide >= e.i.y && playerTopSide <= e.i.y + e.i.height) {
           this.moneyArr.splice(index, 1);
-          this.trackScore(e.i.moneyValue);
+          // this.trackScore(e.i.moneyValue);
+          this.currentScore += e.i.moneyValue;
+          document.querySelector("#canvas-board > div > div.score > span").innerText = this.currentScore;
+
           
           // play money sounds according to type
           if(e.i.moneyType === 2)
@@ -261,10 +258,10 @@ class Game {
     let canMove = true;
     
     // the greater these values are the closer the player will be able to get to the object before it cannot move
-    let rightProximity = 0;
-    let leftProximity = 0;
-    let topProximity = 0;
-    let bottomProximity = 0;
+    let rightProximity = 15;
+    let leftProximity = 15;
+    let topProximity = 25;
+    let bottomProximity = 30;
     
     let playerRightSide = futureX + this.thePlayer.frameWidth - rightProximity;
     let playerLeftSide = futureX  + leftProximity;
@@ -272,7 +269,6 @@ class Game {
     let playerBottomSide = futureY + this.thePlayer.frameHeight - bottomProximity;
     
     this.obstacleArr.forEach((e,index) => {
-      console.log(e.i)
       if(playerRightSide >= e.i.x && playerLeftSide <= e.i.x + e.i.width && 
         playerBottomSide >= e.i.y && playerTopSide <= e.i.y + e.i.height) {
           // this.obstacleArr.splice(index, 1);
@@ -293,6 +289,107 @@ class Game {
     });
     return canMove;
   }
+
+  /**
+   * player collision for all game objects
+   * @param {new x axis position on canvas} futureX 
+   * @param {new y axis position on canvas} futureY  
+   */
+  playerCollision(futureX, futureY) {
+    this.monster2Collision(futureX, futureY);
+    this.moneyCollision(futureX, futureY);
+    if(this.monsterCollision(futureX, futureY) && this.obstacleCollision(futureX, futureY))
+      return true;
+    else
+      return false; 
+  }
+
+  /**
+   * set the goal on canvas 
+   * @param {current game level} level 
+   */
+  setGoal() {
+    if(this.level === 1)
+      document.querySelector("#canvas-board > div > div.goal > span").innerText = 500;
+    else if(this.level === 2)
+      document.querySelector("#canvas-board > div > div.goal > span").innerText = 1800;
+    else if(this.level === 3)
+      document.querySelector("#canvas-board > div > div.goal > span").innerText = 4000;
+    this.goal = document.querySelector("#canvas-board > div > div.goal > span").innerText;
+  }
+
+  playPauseGame() {
+    let playPause = document.querySelector("#canvas-board > button").innerText;
+    if(playPause === "Play")
+      document.querySelector("#canvas-board > button").innerText = "Pause"
+    else
+      document.querySelector("#canvas-board > button").innerText = "Play"
+    $("#character-select").modal('hide');
+    game1.pause = !game1.pause;
+  }
+
+  startTimer() {
+    this.timer--;
+    // set the time to the initial time
+    document.querySelector("#canvas-board > div > div.timer > span").innerText = this.timer;
+    if (this.timer < 200) { // when the time is running out set time font to red
+      document.querySelector("#canvas-board > div > div.timer > span").setAttribute('style', 'color: rgba(180, 34, 8, 0.877)')
+      this.theSound.stopBackground();
+      this.theSound.playTimerSound();
+      if (this.timer === 0) {
+        this.theSound.stopTimer();
+        this.openModal();
+        if(this.level === 3 && Number(document.querySelector("#canvas-board > div > div.score > span").innerText) >= Number(document.querySelector("#canvas-board > div > div.goal > span").innerText)) {
+          setInterval(()=>{
+            this.theSound.stopBackground(); 
+          },1)
+          this.theSound.playWinningSound();
+        }
+      }
+    } 
+    else {
+      document.getElementsByClassName('timer-value')[0].removeAttribute('style', 'color: rgba(180, 34, 8, 0.877)');
+    }
+  }
+
+  openModal() {
+    $("#character-select").modal('show');
+  }
+
+  nextLevelModal() {
+  
+  }
+
+  movePlayer() {
+    document.onkeydown = function (e) {
+      switch(e.key) {
+        case "ArrowUp":
+          if(game1.playerCollision(player.x, player.y - player.speed))
+            player.movePlayer(player.x, player.y - player.speed, e.key); 
+          break;
+        case "ArrowDown":
+          if(game1.playerCollision(player.x, player.y + player.speed))
+            player.movePlayer(player.x, player.y + player.speed, e.key);     
+          break;
+        case "ArrowLeft":
+          if(game1.playerCollision(player.x - player.speed, player.y))
+            player.movePlayer(player.x - player.speed, player.y, e.key);    
+          break;
+        case "ArrowRight":
+          if(game1.playerCollision(player.x + player.speed, player.y))
+            player.movePlayer(player.x + player.speed, player.y, e.key);     
+          break;
+      }
+    }
+  }
+
+  // // track the score and keeps adding it to the score element in the score-board
+  // trackScore(points) {
+  //   this.scoreByLevel = points;
+  //   this.tracker += valueScored;
+  //   this.trackerByLevel[this.level] =+ this.scoreByLevel; 
+  //   // document.getElementsByClassName('score-value')[0].innerText = this.tracker; remove comment once you add html
+  // }
 
   fogCollision(futureX, futureY) {
     // the greater these values are the closer the player will be able to get to the object before it cannot move
@@ -315,44 +412,20 @@ class Game {
     // })
   }
 
-  /**
-   * player collision for all game objects
-   * @param {new x axis position on canvas} futureX 
-   * @param {new y axis position on canvas} futureY  
-   */
-  playerCollision(futureX, futureY) {
-    this.monster2Collision(futureX, futureY);
-    this.moneyCollision(futureX, futureY);
-    if(this.monsterCollision(futureX, futureY) && this.obstacleCollision(futureX, futureY))
-      return true;
-    else
-      return false; 
+  createBackground() {
+    
   }
+  
+  drawBackground() {
+    
+  }
+  
+  drawDirt() {
 
-  // track the score and keeps adding it to the score element in the score-board
-  trackScore(valueScored) {
-    this.scoreByLevel = valueScored;
-    this.tracker += valueScored;
-    this.trackerByLevel[this.level] =+ this.scoreByLevel; 
-    // document.getElementsByClassName('score-value')[0].innerText = this.tracker; remove comment once you add html
   }
 
   // reset the game
   reset() {
     location.reload();
-  }
-
-  /**
-   * returns the goal based on the level
-   * @param {current game level} level 
-   */
-  setGoal(level) {
-    if(level === 1)
-      this.goal = 500;
-    else if(level === 2)
-      this.goal = 1800;
-    if(level === 3)
-      this.goal = 4000;
-    return this.goal;
   }
 }

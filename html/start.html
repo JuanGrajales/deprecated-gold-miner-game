@@ -33,16 +33,20 @@
         <div class="score">
           <label>Money: </label><span class="score-value">0</span>
         </div>
-        <div class="timer">
-            <label>Timer: </label> <span class="timer-value">0</span>
-          </div>
         <div class="goal">
           <label>Goal: </label><span class="goal-value">0</span>
         </div>
+        <div class="health">
+            <label>Health: </label><span class="health-value">100</span>
+        </div>
+        <div class="timer">
+          <label>Timer: </label> <span class="timer-value">0</span>
+        </div>
       </div>
       <!-- play/pause button -->
-      <button type="button" class="pause-btn btn btn-dark">Pause</button>
+      <button type="button" class="pause-btn btn btn-outline-dark" onclick="playPauseGame()">Play</button>
     </div>
+    
     
     <!-- Character Select Modal -->
     <div class="modal fade" id="character-select" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -58,8 +62,8 @@
             Select a Character
           </div>
           <div class="modal-footer character-select-modal">
-            <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button> -->
+            <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+            <button type="button" class="btn btn-warning btn-outline-dark" onclick="splayPauseGame()">Happy Mining!</button>
           </div>
         </div>
       </div>

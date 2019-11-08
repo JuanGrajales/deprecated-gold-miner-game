@@ -3,8 +3,8 @@ class Player {
    * constructor for Player object
    */
   constructor() {
-    this.x = 0;
-    this.y = 0;
+    this.x = 50;
+    this.y = 50;
     this.speed = 8;
     this.health = 100;
 

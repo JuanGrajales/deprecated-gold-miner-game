@@ -1,6 +1,5 @@
 // create the canvas that you will be working, assign it to ctx
 const ctx = document.getElementById('canvas-img').getContext('2d');
-
 // variables that hold the canvas width and height in case the canvas size changes
 let canvasWidth = document.querySelector("#canvas-img").width;
 let canvasHeight = document.querySelector("#canvas-img").height;
@@ -19,8 +18,9 @@ let frameSpeed = 15;
  * mainLoop recursively calls itself
  */
 function mainLoop() {
-  if(game1.pause) {
+  if(!game1.pause) {
     frames++;
+    game1.startTimer();
   
     // clearRect erases the pixels of the canvas starting from (0, 0) until (canvasWidth, canvasHeight)
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -42,39 +42,21 @@ function mainLoop() {
   window.requestAnimationFrame(mainLoop);
 } 
 
-/**
- * move the player in the direction of the key stroke
- */
-function movePlayer() {
-  document.onkeydown = function (e) {
-    switch(e.key) {
-      case "ArrowUp":
-        if(game1.playerCollision(player.x, player.y - player.speed))
-          player.movePlayer(player.x, player.y - player.speed, e.key); 
-        break;
-      case "ArrowDown":
-        if(game1.playerCollision(player.x, player.y + player.speed))
-          player.movePlayer(player.x, player.y + player.speed, e.key);     
-        break;
-      case "ArrowLeft":
-        if(game1.playerCollision(player.x - player.speed, player.y))
-          player.movePlayer(player.x - player.speed, player.y, e.key);    
-        break;
-      case "ArrowRight":
-        if(game1.playerCollision(player.x + player.speed, player.y))
-          player.movePlayer(player.x + player.speed, player.y, e.key);     
-        break;
-      case " ":
-        game1.pause = !game1.pause;
-        break;
-    }
-  }
+/****** Functions *****/
+
+function smovePlayer() {
+  game1.movePlayer();
+}
+
+function splayPauseGame() {
+  game1.playPauseGame();
 }
 
 function startGame() {
+  $("#character-select").modal();
   mainLoop();
-  movePlayer();
-  $("#character-select").modal()
+  game1.setGoal();
+  smovePlayer();
 }
 
 startGame();
